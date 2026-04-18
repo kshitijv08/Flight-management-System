@@ -1,0 +1,202 @@
+.dp-wrap {
+  position: relative;
+  width: 100%;
+}
+
+/* ── Trigger button ──────────────────────────────────────────── */
+.dp-trigger {
+  width: 100%;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-mute);
+  font-size: 14px;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  text-align: left;
+}
+
+.dp-trigger:hover,
+.dp-trigger.open {
+  border-color: var(--amber);
+}
+
+.dp-trigger.open {
+  box-shadow: 0 0 0 2px var(--amber-glow);
+}
+
+.dp-cal-icon { color: var(--text-mute); flex-shrink: 0; }
+.dp-trigger.open .dp-cal-icon,
+.dp-trigger.has-value .dp-cal-icon { color: var(--amber); }
+
+.dp-placeholder { color: var(--text-mute); flex: 1; }
+.dp-value       { color: var(--text);      flex: 1; font-family: var(--font-mono); font-size: 13px; }
+
+.dp-clear {
+  color: var(--text-mute);
+  font-size: 10px;
+  padding: 2px 4px;
+  border-radius: 2px;
+  transition: color var(--transition);
+  flex-shrink: 0;
+}
+.dp-clear:hover { color: var(--red); }
+
+/* ── Popover ─────────────────────────────────────────────────── */
+.dp-popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 200;
+  width: 264px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+  animation: dpFadeIn 0.15s ease both;
+  overflow: hidden;
+}
+
+@keyframes dpFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Header ──────────────────────────────────────────────────── */
+.dp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.dp-month-label {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.dp-year {
+  color: var(--amber);
+}
+
+.dp-nav {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: var(--transition);
+}
+.dp-nav:hover {
+  border-color: var(--amber-dim);
+  color: var(--amber);
+}
+
+/* ── Day names row ───────────────────────────────────────────── */
+.dp-day-names {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  padding: 10px 12px 4px;
+  gap: 2px;
+}
+
+.dp-day-name {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  padding: 4px 0;
+}
+
+/* ── Grid ────────────────────────────────────────────────────── */
+.dp-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  padding: 4px 12px 12px;
+  gap: 2px;
+}
+
+.dp-cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-dim);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+
+.dp-cell.empty { pointer-events: none; }
+
+.dp-cell:not(.empty):not(.past):hover {
+  background: var(--bg-hover);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.dp-cell.today {
+  border-color: var(--amber-dim);
+  color: var(--amber);
+}
+
+.dp-cell.selected {
+  background: var(--amber);
+  border-color: var(--amber);
+  color: #0C0C10;
+  font-weight: 600;
+}
+
+.dp-cell.past {
+  color: var(--text-mute);
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ── Footer ──────────────────────────────────────────────────── */
+.dp-footer {
+  border-top: 1px solid var(--border);
+  padding: 10px 12px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.dp-today-btn {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--amber);
+  background: transparent;
+  border: 1px solid var(--amber-dim);
+  border-radius: var(--radius);
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.dp-today-btn:hover {
+  background: var(--amber-glow);
+}

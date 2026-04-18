@@ -1,0 +1,110 @@
+.flight-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  cursor: pointer;
+  transition: border-color var(--transition), background var(--transition);
+  animation: fadeUp 0.3s ease both;
+}
+
+.flight-card:hover {
+  border-color: var(--border-hi);
+  background: var(--bg-hover);
+}
+
+.fc-airline-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.fc-flight-id {
+  font-size: 11px;
+  color: var(--text-mute);
+  letter-spacing: 0.08em;
+}
+
+.fc-route {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.fc-endpoint {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 52px;
+}
+
+.fc-endpoint.right { align-items: flex-end; }
+
+.fc-code {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  line-height: 1;
+}
+
+.fc-time {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+.fc-duration-track {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+
+.fc-dot {
+  width: 5px;
+  height: 5px;
+  border: 1.5px solid var(--amber-dim);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.fc-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.fc-dur {
+  white-space: nowrap;
+  padding: 0 4px;
+}
+
+.fc-plane {
+  color: var(--amber);
+  flex-shrink: 0;
+}
+
+.fc-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.fc-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.fc-price {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--amber);
+}

@@ -1,0 +1,38 @@
+.search-results {
+  padding-top: 40px;
+  padding-bottom: 80px;
+}
+
+.sr-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.sr-route {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sr-airport {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.sr-route svg { color: var(--text-mute); }
+
+.sr-count {
+  margin-bottom: 16px;
+}
+
+.sr-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

@@ -1,0 +1,135 @@
+.register {
+  padding-top: 40px;
+  padding-bottom: 80px;
+}
+
+.reg-layout {
+  display: grid;
+  grid-template-columns: 1fr 480px;
+  gap: 60px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .reg-layout { grid-template-columns: 1fr; gap: 32px; }
+  .reg-info .reg-deco { display: none; }
+}
+
+/* ── Info panel ──────────────────────────────────────────────── */
+.reg-info {
+  padding-top: 12px;
+  position: relative;
+}
+
+.reg-eyebrow {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.reg-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 1px;
+  background: var(--amber);
+}
+
+.reg-title {
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.reg-sub {
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 1.6;
+  max-width: 340px;
+  margin-bottom: 32px;
+}
+
+.reg-bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.reg-bullet {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+.reg-bullet-dot {
+  color: var(--amber);
+  font-size: 10px;
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+.reg-deco {
+  position: absolute;
+  bottom: -40px;
+  left: -40px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(212,162,58,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ── Form col ────────────────────────────────────────────────── */
+.reg-form-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.reg-form-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.reg-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Success banner ──────────────────────────────────────────── */
+.reg-success {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  background: rgba(61,168,130,0.08);
+  border: 1px solid var(--green);
+  border-radius: var(--radius);
+}
+
+.reg-success-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(61,168,130,0.15);
+  border: 1px solid var(--green);
+  color: var(--green);
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.reg-success-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--green);
+}
+
+.reg-success .btn { margin-left: auto; }

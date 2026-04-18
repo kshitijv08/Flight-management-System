@@ -1,0 +1,101 @@
+.booking-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: fadeUp 0.3s ease both;
+}
+
+.bc-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.bc-id-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.bc-id {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: 0.04em;
+}
+
+.bc-route {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bc-airport {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.bc-airport.right { align-items: flex-end; }
+
+.bc-code {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+
+.bc-arrow {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bc-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.bc-flight-id {
+  font-size: 10px;
+  color: var(--text-mute);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.bc-meta {
+  display: flex;
+  gap: 32px;
+  padding: 14px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.bc-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bc-meta-item .mono {
+  font-size: 14px;
+  color: var(--text);
+}
+
+.bc-seat {
+  color: var(--amber) !important;
+  font-weight: 500;
+}
+
+.bc-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}

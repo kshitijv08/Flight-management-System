@@ -1,0 +1,70 @@
+.my-bookings {
+  padding-top: 40px;
+  padding-bottom: 80px;
+}
+
+.mb-bookings-success {
+  margin-bottom: 24px;
+}
+
+.mb-header {
+  margin-bottom: 28px;
+}
+
+.mb-title {
+  font-size: clamp(28px, 4vw, 40px);
+  letter-spacing: -0.02em;
+}
+
+.mb-search {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  padding: 20px 24px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 28px;
+}
+
+.mb-search-btn {
+  height: 44px;
+  flex-shrink: 0;
+  align-self: flex-end;
+}
+
+/* ── Stats bar ───────────────────────────────────────────────── */
+.mb-stats {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.mb-stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 16px;
+  background: var(--bg-card);
+  border-right: 1px solid var(--border);
+}
+
+.mb-stat:last-child { border-right: none; }
+
+.mb-stat-num {
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+/* ── Booking list ────────────────────────────────────────────── */
+.mb-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
