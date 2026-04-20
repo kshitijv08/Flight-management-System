@@ -223,6 +223,7 @@ export default function BookFlight() {
 
             <div className="seat-map">
               <div className="seat-map-cols">
+                <span className="seat-col-label label"/>
                 {COLS.map(c => <span key={c} className="seat-col-label label">{c}</span>)}
               </div>
               {Array.from({ length: ROWS }, (_, r) => r + 1).map(row => (
