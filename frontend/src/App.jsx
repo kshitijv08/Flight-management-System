@@ -6,6 +6,7 @@ import BookFlight from './pages/BookFlight'
 import Payment from './pages/Payment'
 import MyBookings from './pages/MyBookings'
 import Register from './pages/Register'
+import Login from './pages/Login'
 import Admin from './pages/Admin'
 
 export default function App() {
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="/payment/:bookingId" element={<Payment />} />
           <Route path="/my-bookings"        element={<MyBookings />} />
           <Route path="/register"           element={<Register />} />
+          <Route path="/login"              element={<Login />} />
           <Route path="/admin"              element={<Admin />} />
         </Routes>
       </main>

@@ -1,0 +1,82 @@
+.login {
+  padding-top: 40px;
+  padding-bottom: 80px;
+}
+
+.login-layout {
+  display: grid;
+  grid-template-columns: 1fr 480px;
+  gap: 60px;
+  align-items: center;
+  min-height: 60vh;
+}
+
+@media (max-width: 900px) {
+  .login-layout { grid-template-columns: 1fr; gap: 32px; align-items: start; }
+  .login-info .login-deco { display: none; }
+}
+
+/* ── Info panel ──────────────────────────────────────────────── */
+.login-info {
+  padding-top: 12px;
+  position: relative;
+}
+
+.login-eyebrow {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.login-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 1px;
+  background: var(--amber);
+}
+
+.login-title {
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.login-sub {
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 1.6;
+  max-width: 340px;
+  margin-bottom: 32px;
+}
+
+.login-deco {
+  position: absolute;
+  bottom: -40px;
+  left: -40px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(212,162,58,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ── Form col ────────────────────────────────────────────────── */
+.login-form-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.login-form-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

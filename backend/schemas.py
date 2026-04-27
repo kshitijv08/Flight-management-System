@@ -69,6 +69,11 @@ class PassengerUpdate(BaseModel):
     Gender:    Optional[GenderEnum] = None
 
 
+class PassengerLogin(BaseModel):
+    username: str
+    password: str
+
+
 # ── Airline ───────────────────────────────────────────────────────────────────
 
 class AirlineCreate(BaseModel):

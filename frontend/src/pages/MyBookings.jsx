@@ -42,6 +42,16 @@ export default function MyBookings() {
     }
   }, [])
 
+  useEffect(() => {
+    const p = localStorage.getItem('passenger')
+    if (p) {
+      const passenger = JSON.parse(p)
+      setInputVal(passenger.IdentificationID)
+      setIdentificationId(passenger.IdentificationID)
+      fetchBookings(passenger.IdentificationID)
+    }
+  }, [fetchBookings])
+
   const handleSearch = (e) => {
     e.preventDefault()
     if (!inputVal.trim()) return

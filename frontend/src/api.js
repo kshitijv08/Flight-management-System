@@ -17,6 +17,7 @@ export const getAircraft = () => api.get('/aircraft')
 
 // ── Passengers ───────────────────────────────────────────────
 export const registerPassenger = (data) => api.post('/passengers', data)
+export const loginPassenger = (data) => api.post('/passengers/login', data)
 export const getPassenger = (id) => api.get(`/passengers/${id}`)
 export const getPassengerBookings = (id) => api.get(`/passengers/${id}/bookings`)
 

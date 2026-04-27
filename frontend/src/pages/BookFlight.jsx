@@ -39,6 +39,18 @@ export default function BookFlight() {
       .finally(() => setLoading(false))
   }, [flightId])
 
+  useEffect(() => {
+    const p = localStorage.getItem('passenger')
+    if (p) {
+      const passenger = JSON.parse(p)
+      setForm(f => ({
+        ...f,
+        IdentificationID: passenger.IdentificationID,
+        IDType: passenger.IDType || 'Aadhar',
+      }))
+    }
+  }, [])
+
   const selectSeat = (seat) => {
     if (bookedSeats.includes(seat)) return
     setForm(f => ({ ...f, SeatNo: f.SeatNo === seat ? '' : seat }))

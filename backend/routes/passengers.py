@@ -21,6 +21,20 @@ def create_passenger(payload: schemas.PassengerCreate, db: Session = Depends(get
     return passenger
 
 
+@router.post("/login", response_model=schemas.PassengerOut)
+def login_passenger(payload: schemas.PassengerLogin, db: Session = Depends(get_db)):
+    # The user requested: password should be the ID number (IdentificationID)
+    # and username the name of that person (FirstName).
+    passenger = db.query(models.Passenger).filter(
+        models.Passenger.FirstName == payload.username,
+        models.Passenger.IdentificationID == payload.password
+    ).first()
+    
+    if not passenger:
+        raise HTTPException(status_code=401, detail="Invalid username or password")
+        
+    return passenger
+
 @router.get("/", response_model=List[schemas.PassengerOut])
 def list_passengers(db: Session = Depends(get_db)):
     return db.query(models.Passenger).all()
