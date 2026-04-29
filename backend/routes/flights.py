@@ -86,3 +86,40 @@ def delete_flight(flight_id: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Flight not found")
     db.delete(f)
     db.commit()
+
+
+@router.put("/{flight_id}", response_model=schemas.FlightOut)
+def update_flight(flight_id: str, payload: schemas.FlightUpdate, db: Session = Depends(get_db)):
+    f = db.query(models.Flight).filter_by(FlightID=flight_id).first()
+    if not f:
+        raise HTTPException(status_code=404, detail="Flight not found")
+
+    update_data = payload.model_dump(exclude_unset=True)
+
+    # Validate FKs if they are being updated
+    if "AirlineID" in update_data and update_data["AirlineID"] != f.AirlineID:
+        if not db.query(models.Airline).filter_by(AirlineID=update_data["AirlineID"]).first():
+            raise HTTPException(status_code=404, detail="Airline not found")
+    if "AircraftID" in update_data and update_data["AircraftID"] != f.AircraftID:
+        if not db.query(models.Aircraft).filter_by(AircraftID=update_data["AircraftID"]).first():
+            raise HTTPException(status_code=404, detail="Aircraft not found")
+    if "DepartureAirport" in update_data and update_data["DepartureAirport"] != f.DepartureAirport:
+        if not db.query(models.Airport).filter_by(AirportCode=update_data["DepartureAirport"]).first():
+            raise HTTPException(status_code=404, detail="Departure airport not found")
+    if "ArrivalAirport" in update_data and update_data["ArrivalAirport"] != f.ArrivalAirport:
+        if not db.query(models.Airport).filter_by(AirportCode=update_data["ArrivalAirport"]).first():
+            raise HTTPException(status_code=404, detail="Arrival airport not found")
+
+    # Check departure and arrival are different
+    dep_airport = update_data.get("DepartureAirport", f.DepartureAirport)
+    arr_airport = update_data.get("ArrivalAirport", f.ArrivalAirport)
+    if dep_airport == arr_airport:
+        raise HTTPException(status_code=400, detail="Departure and arrival airports must differ")
+
+    # Apply updates
+    for key, value in update_data.items():
+        setattr(f, key, value)
+
+    db.commit()
+    db.refresh(f)
+    return f

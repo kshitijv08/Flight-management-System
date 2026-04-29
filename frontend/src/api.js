@@ -13,6 +13,8 @@ export const getFlight = (id) => api.get(`/flights/${id}`)
 export const getFlights = () => api.get('/flights')
 export const getBookedSeats = (flightId) => api.get(`/flights/${flightId}/seats`)
 export const createFlight = (data) => api.post('/flights', data)
+export const updateFlight = (id, data) => api.put(`/flights/${id}`, data)
+export const deleteFlight = (id) => api.delete(`/flights/${id}`)
 export const getAircraft = () => api.get('/aircraft')
 
 // ── Passengers ───────────────────────────────────────────────

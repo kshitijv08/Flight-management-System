@@ -140,6 +140,23 @@ class FlightCreate(BaseModel):
             raise ValueError("ArrivalTime must be after DeptTime")
         return v
 
+class FlightUpdate(BaseModel):
+    DeptTime:         Optional[datetime] = None
+    ArrivalTime:      Optional[datetime] = None
+    Cost:             Optional[Decimal] = None
+    AirlineID:        Optional[str] = None
+    AircraftID:       Optional[str] = None
+    DepartureAirport: Optional[str] = None
+    ArrivalAirport:   Optional[str] = None
+
+    @field_validator("ArrivalTime")
+    @classmethod
+    def arrival_after_departure(cls, v, info):
+        dept = info.data.get("DeptTime")
+        if dept and v and v <= dept:
+            raise ValueError("ArrivalTime must be after DeptTime")
+        return v
+
 class FlightOut(BaseModel):
     FlightID:         str
     DeptTime:         datetime
