@@ -32,6 +32,18 @@ def get_airline(airline_id: str, db: Session = Depends(get_db)):
     return a
 
 
+@router.put("/{airline_id}", response_model=schemas.AirlineOut)
+def update_airline(airline_id: str, payload: schemas.AirlineUpdate, db: Session = Depends(get_db)):
+    a = db.query(models.Airline).filter_by(AirlineID=airline_id).first()
+    if not a:
+        raise HTTPException(status_code=404, detail="Airline not found")
+    for key, value in payload.model_dump(exclude_unset=True).items():
+        setattr(a, key, value)
+    db.commit()
+    db.refresh(a)
+    return a
+
+
 @router.delete("/{airline_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_airline(airline_id: str, db: Session = Depends(get_db)):
     a = db.query(models.Airline).filter_by(AirlineID=airline_id).first()

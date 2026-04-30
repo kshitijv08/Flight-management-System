@@ -16,6 +16,8 @@ export const createFlight = (data) => api.post('/flights', data)
 export const updateFlight = (id, data) => api.put(`/flights/${id}`, data)
 export const deleteFlight = (id) => api.delete(`/flights/${id}`)
 export const getAircraft = () => api.get('/aircraft')
+export const updateAircraft = (id, data) => api.put(`/aircraft/${id}`, data)
+export const deleteAircraft = (id) => api.delete(`/aircraft/${id}`)
 
 // ── Passengers ───────────────────────────────────────────────
 export const registerPassenger = (data) => api.post('/passengers', data)
@@ -35,8 +37,12 @@ export const getPaymentByBooking = (bookingId) => api.get(`/payments/booking/${b
 
 // ── Airports ─────────────────────────────────────────────────
 export const getAirports = () => api.get('/airports')
+export const updateAirport = (code, data) => api.put(`/airports/${code}`, data)
+export const deleteAirport = (code) => api.delete(`/airports/${code}`)
 
 // ── Airlines ─────────────────────────────────────────────────
 export const getAirlines = () => api.get('/airlines')
+export const updateAirline = (id, data) => api.put(`/airlines/${id}`, data)
+export const deleteAirline = (id) => api.delete(`/airlines/${id}`)
 
 export default api

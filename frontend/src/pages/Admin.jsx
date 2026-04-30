@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react'
-import { createFlight, getFlights, deleteFlight, updateFlight, getAirlines, getAirports, getAircraft } from '../api'
+import {
+  createFlight, getFlights, deleteFlight, updateFlight,
+  getAirlines, updateAirline, deleteAirline,
+  getAirports, updateAirport, deleteAirport,
+  getAircraft, updateAircraft, deleteAircraft
+} from '../api'
 import api from '../api'
 import './Admin.css'
 
@@ -25,6 +30,9 @@ export default function Admin() {
   const [aircrafts, setAircrafts] = useState([])
   const [flights,   setFlights]   = useState([])
   const [editingFlight, setEditingFlight] = useState(null)
+  const [editingAirline, setEditingAirline] = useState(null)
+  const [editingAirport, setEditingAirport] = useState(null)
+  const [editingAircraft, setEditingAircraft] = useState(null)
 
   const [flightForm,  setFlightForm]  = useState(emptyFlight)
   const [airlineForm, setAirlineForm] = useState(emptyAirline)
@@ -145,6 +153,96 @@ export default function Admin() {
       const fl = await getFlights(); setFlights(fl.data)
     } catch (err) {
       flash('error', err.response?.data?.detail || 'Failed to update flight.')
+    } finally { setLoading(false) }
+  }
+
+  // ── Airline CRUD ─────────────────────────────────────────────
+  const handleDeleteAirline = async (id) => {
+    if (!window.confirm(`Delete airline ${id}? This may fail if flights/aircraft reference it.`)) return
+    try {
+      await deleteAirline(id)
+      flash('success', `Airline ${id} deleted.`)
+      const r = await getAirlines(); setAirlines(r.data)
+    } catch (err) {
+      flash('error', err.response?.data?.detail || 'Failed to delete airline.')
+    }
+  }
+
+  const startEditAirline = (a) => setEditingAirline({ ...a })
+
+  const submitEditAirline = async (e) => {
+    e.preventDefault(); setLoading(true)
+    try {
+      await updateAirline(editingAirline.AirlineID, {
+        AirlineName: editingAirline.AirlineName,
+        Owner: editingAirline.Owner
+      })
+      flash('success', `Airline ${editingAirline.AirlineID} updated.`)
+      setEditingAirline(null)
+      const r = await getAirlines(); setAirlines(r.data)
+    } catch (err) {
+      flash('error', err.response?.data?.detail || 'Failed to update airline.')
+    } finally { setLoading(false) }
+  }
+
+  // ── Airport CRUD ────────────────────────────────────────────
+  const handleDeleteAirport = async (code) => {
+    if (!window.confirm(`Delete airport ${code}? This may fail if flights reference it.`)) return
+    try {
+      await deleteAirport(code)
+      flash('success', `Airport ${code} deleted.`)
+      const r = await getAirports(); setAirports(r.data)
+    } catch (err) {
+      flash('error', err.response?.data?.detail || 'Failed to delete airport.')
+    }
+  }
+
+  const startEditAirport = (a) => setEditingAirport({ ...a })
+
+  const submitEditAirport = async (e) => {
+    e.preventDefault(); setLoading(true)
+    try {
+      await updateAirport(editingAirport.AirportCode, {
+        AirportName: editingAirport.AirportName,
+        City: editingAirport.City,
+        Country: editingAirport.Country,
+        Terminal: editingAirport.Terminal
+      })
+      flash('success', `Airport ${editingAirport.AirportCode} updated.`)
+      setEditingAirport(null)
+      const r = await getAirports(); setAirports(r.data)
+    } catch (err) {
+      flash('error', err.response?.data?.detail || 'Failed to update airport.')
+    } finally { setLoading(false) }
+  }
+
+  // ── Aircraft CRUD ───────────────────────────────────────────
+  const handleDeleteAircraft = async (id) => {
+    if (!window.confirm(`Delete aircraft ${id}? This may fail if flights reference it.`)) return
+    try {
+      await deleteAircraft(id)
+      flash('success', `Aircraft ${id} deleted.`)
+      const r = await getAircraft(); setAircrafts(r.data)
+    } catch (err) {
+      flash('error', err.response?.data?.detail || 'Failed to delete aircraft.')
+    }
+  }
+
+  const startEditAircraft = (a) => setEditingAircraft({ ...a })
+
+  const submitEditAircraft = async (e) => {
+    e.preventDefault(); setLoading(true)
+    try {
+      await updateAircraft(editingAircraft.AircraftID, {
+        Model: editingAircraft.Model,
+        Capacity: Number(editingAircraft.Capacity),
+        AirlineID: editingAircraft.AirlineID
+      })
+      flash('success', `Aircraft ${editingAircraft.AircraftID} updated.`)
+      setEditingAircraft(null)
+      const r = await getAircraft(); setAircrafts(r.data)
+    } catch (err) {
+      flash('error', err.response?.data?.detail || 'Failed to update aircraft.')
     } finally { setLoading(false) }
   }
 
@@ -422,13 +520,17 @@ export default function Admin() {
             <h3 className="admin-form-title">Airlines ({airlines.length})</h3>
             <div className="admin-table-wrap">
               <table className="admin-table">
-                <thead><tr><th>ID</th><th>Name</th><th>Owner</th></tr></thead>
+                <thead><tr><th>ID</th><th>Name</th><th>Owner</th><th>Actions</th></tr></thead>
                 <tbody>
                   {airlines.map(a => (
                     <tr key={a.AirlineID}>
                       <td className="mono">{a.AirlineID}</td>
                       <td>{a.AirlineName}</td>
                       <td>{a.Owner}</td>
+                      <td>
+                        <button className="btn btn-ghost btn-sm" onClick={() => startEditAirline(a)}>Edit</button>
+                        <button className="btn btn-ghost btn-sm" style={{color: 'var(--red)'}} onClick={() => handleDeleteAirline(a.AirlineID)}>Delete</button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -440,7 +542,7 @@ export default function Admin() {
             <h3 className="admin-form-title">Airports ({airports.length})</h3>
             <div className="admin-table-wrap">
               <table className="admin-table">
-                <thead><tr><th>Code</th><th>Name</th><th>City</th><th>Terminal</th></tr></thead>
+                <thead><tr><th>Code</th><th>Name</th><th>City</th><th>Terminal</th><th>Actions</th></tr></thead>
                 <tbody>
                   {airports.map(a => (
                     <tr key={a.AirportCode}>
@@ -448,6 +550,10 @@ export default function Admin() {
                       <td>{a.AirportName}</td>
                       <td>{a.City}</td>
                       <td className="mono">{a.Terminal || '—'}</td>
+                      <td>
+                        <button className="btn btn-ghost btn-sm" onClick={() => startEditAirport(a)}>Edit</button>
+                        <button className="btn btn-ghost btn-sm" style={{color: 'var(--red)'}} onClick={() => handleDeleteAirport(a.AirportCode)}>Delete</button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -459,7 +565,7 @@ export default function Admin() {
             <h3 className="admin-form-title">Aircraft ({aircrafts.length})</h3>
             <div className="admin-table-wrap">
               <table className="admin-table">
-                <thead><tr><th>Tail No.</th><th>Model</th><th>Capacity</th><th>Airline</th></tr></thead>
+                <thead><tr><th>Tail No.</th><th>Model</th><th>Capacity</th><th>Airline</th><th>Actions</th></tr></thead>
                 <tbody>
                   {aircrafts.map(a => (
                     <tr key={a.AircraftID}>
@@ -467,6 +573,10 @@ export default function Admin() {
                       <td>{a.Model}</td>
                       <td className="mono">{a.Capacity}</td>
                       <td className="mono">{a.AirlineID}</td>
+                      <td>
+                        <button className="btn btn-ghost btn-sm" onClick={() => startEditAircraft(a)}>Edit</button>
+                        <button className="btn btn-ghost btn-sm" style={{color: 'var(--red)'}} onClick={() => handleDeleteAircraft(a.AircraftID)}>Delete</button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -537,6 +647,117 @@ export default function Admin() {
                 <select value={editingFlight.ArrivalAirport} onChange={e => setEditingFlight({...editingFlight, ArrivalAirport: e.target.value})} required>
                   <option value="">Select airport</option>
                   {airports.map(a => <option key={a.AirportCode} value={a.AirportCode}>{a.AirportCode} — {a.City}</option>)}
+                </select>
+              </div>
+            </div>
+            <button type="submit" className="btn btn-primary" disabled={loading} style={{ marginTop: 20 }}>
+              {loading ? 'Saving…' : 'Save Changes'}
+            </button>
+          </form>
+        </div>
+      )}
+
+      {/* ── Edit Airline Modal ── */}
+      {editingAirline && (
+        <div className="modal-overlay" style={{
+            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+            backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex',
+            alignItems: 'center', justifyContent: 'center', zIndex: 1000
+        }}>
+          <form onSubmit={submitEditAirline} className="admin-form card" style={{ maxWidth: '500px', width: '90%', maxHeight: '90vh', overflowY: 'auto', backgroundColor: 'var(--bg)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h3 className="admin-form-title">Edit Airline {editingAirline.AirlineID}</h3>
+              <button type="button" className="btn btn-ghost btn-sm" onClick={() => setEditingAirline(null)}>✕</button>
+            </div>
+            <div className="divider" style={{ margin: '12px 0 20px' }} />
+            <div className="field">
+              <label>Airline Name</label>
+              <input value={editingAirline.AirlineName}
+                onChange={e => setEditingAirline({...editingAirline, AirlineName: e.target.value})} required />
+            </div>
+            <div className="field">
+              <label>Owner</label>
+              <input value={editingAirline.Owner}
+                onChange={e => setEditingAirline({...editingAirline, Owner: e.target.value})} required />
+            </div>
+            <button type="submit" className="btn btn-primary" disabled={loading} style={{ marginTop: 20 }}>
+              {loading ? 'Saving…' : 'Save Changes'}
+            </button>
+          </form>
+        </div>
+      )}
+
+      {/* ── Edit Airport Modal ── */}
+      {editingAirport && (
+        <div className="modal-overlay" style={{
+            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+            backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex',
+            alignItems: 'center', justifyContent: 'center', zIndex: 1000
+        }}>
+          <form onSubmit={submitEditAirport} className="admin-form card" style={{ maxWidth: '500px', width: '90%', maxHeight: '90vh', overflowY: 'auto', backgroundColor: 'var(--bg)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h3 className="admin-form-title">Edit Airport {editingAirport.AirportCode}</h3>
+              <button type="button" className="btn btn-ghost btn-sm" onClick={() => setEditingAirport(null)}>✕</button>
+            </div>
+            <div className="divider" style={{ margin: '12px 0 20px' }} />
+            <div className="field">
+              <label>Airport Name</label>
+              <input value={editingAirport.AirportName}
+                onChange={e => setEditingAirport({...editingAirport, AirportName: e.target.value})} required />
+            </div>
+            <div className="grid-2">
+              <div className="field">
+                <label>City</label>
+                <input value={editingAirport.City}
+                  onChange={e => setEditingAirport({...editingAirport, City: e.target.value})} required />
+              </div>
+              <div className="field">
+                <label>Country</label>
+                <input value={editingAirport.Country}
+                  onChange={e => setEditingAirport({...editingAirport, Country: e.target.value})} required />
+              </div>
+            </div>
+            <div className="field">
+              <label>Terminal</label>
+              <input value={editingAirport.Terminal || ''}
+                onChange={e => setEditingAirport({...editingAirport, Terminal: e.target.value})} />
+            </div>
+            <button type="submit" className="btn btn-primary" disabled={loading} style={{ marginTop: 20 }}>
+              {loading ? 'Saving…' : 'Save Changes'}
+            </button>
+          </form>
+        </div>
+      )}
+
+      {/* ── Edit Aircraft Modal ── */}
+      {editingAircraft && (
+        <div className="modal-overlay" style={{
+            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+            backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex',
+            alignItems: 'center', justifyContent: 'center', zIndex: 1000
+        }}>
+          <form onSubmit={submitEditAircraft} className="admin-form card" style={{ maxWidth: '500px', width: '90%', maxHeight: '90vh', overflowY: 'auto', backgroundColor: 'var(--bg)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h3 className="admin-form-title">Edit Aircraft {editingAircraft.AircraftID}</h3>
+              <button type="button" className="btn btn-ghost btn-sm" onClick={() => setEditingAircraft(null)}>✕</button>
+            </div>
+            <div className="divider" style={{ margin: '12px 0 20px' }} />
+            <div className="field">
+              <label>Model</label>
+              <input value={editingAircraft.Model}
+                onChange={e => setEditingAircraft({...editingAircraft, Model: e.target.value})} required />
+            </div>
+            <div className="grid-2">
+              <div className="field">
+                <label>Capacity</label>
+                <input type="number" min="1" value={editingAircraft.Capacity}
+                  onChange={e => setEditingAircraft({...editingAircraft, Capacity: e.target.value})} required />
+              </div>
+              <div className="field">
+                <label>Airline</label>
+                <select value={editingAircraft.AirlineID} onChange={e => setEditingAircraft({...editingAircraft, AirlineID: e.target.value})} required>
+                  <option value="">Select airline</option>
+                  {airlines.map(a => <option key={a.AirlineID} value={a.AirlineID}>{a.AirlineID} — {a.AirlineName}</option>)}
                 </select>
               </div>
             </div>

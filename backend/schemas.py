@@ -85,6 +85,10 @@ class AirlineOut(AirlineCreate):
     class Config:
         from_attributes = True
 
+class AirlineUpdate(BaseModel):
+    AirlineName: Optional[str] = None
+    Owner:       Optional[str] = None
+
 
 # ── Airport ───────────────────────────────────────────────────────────────────
 
@@ -98,6 +102,12 @@ class AirportCreate(BaseModel):
 class AirportOut(AirportCreate):
     class Config:
         from_attributes = True
+
+class AirportUpdate(BaseModel):
+    AirportName: Optional[str] = None
+    City:        Optional[str] = None
+    Country:     Optional[str] = None
+    Terminal:    Optional[str] = None
 
 
 # ── Aircraft ──────────────────────────────────────────────────────────────────
@@ -118,6 +128,18 @@ class AircraftCreate(BaseModel):
 class AircraftOut(AircraftCreate):
     class Config:
         from_attributes = True
+
+class AircraftUpdate(BaseModel):
+    Model:     Optional[str] = None
+    Capacity:  Optional[int] = None
+    AirlineID: Optional[str] = None
+
+    @field_validator("Capacity")
+    @classmethod
+    def capacity_positive(cls, v):
+        if v is not None and v <= 0:
+            raise ValueError("Capacity must be positive")
+        return v
 
 
 # ── Flight ────────────────────────────────────────────────────────────────────

@@ -32,6 +32,18 @@ def get_airport(airport_code: str, db: Session = Depends(get_db)):
     return a
 
 
+@router.put("/{airport_code}", response_model=schemas.AirportOut)
+def update_airport(airport_code: str, payload: schemas.AirportUpdate, db: Session = Depends(get_db)):
+    a = db.query(models.Airport).filter_by(AirportCode=airport_code.upper()).first()
+    if not a:
+        raise HTTPException(status_code=404, detail="Airport not found")
+    for key, value in payload.model_dump(exclude_unset=True).items():
+        setattr(a, key, value)
+    db.commit()
+    db.refresh(a)
+    return a
+
+
 @router.delete("/{airport_code}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_airport(airport_code: str, db: Session = Depends(get_db)):
     a = db.query(models.Airport).filter_by(AirportCode=airport_code.upper()).first()
